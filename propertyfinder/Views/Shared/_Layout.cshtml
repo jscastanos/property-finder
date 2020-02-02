@@ -1,0 +1,60 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/png" href="@Url.Content("~/img/favicon.png")" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <title>Material Dashboard | @ViewBag.Title</title>
+
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+
+   @Styles.Render("~/Content/css")
+
+    @Styles.Render("~/Content/fonts")
+
+    @Scripts.Render("~/Scripts/angular")
+<body ng-app="PF">
+    <div class="wrapper">
+
+       @RenderPage("_sidebar.cshtml")
+
+        <div class="main-panel">
+            
+            @RenderPage("_navbar.cshtml")
+
+
+
+
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        @RenderBody()
+                    </div>
+
+                </div>
+            </div>
+
+
+
+
+            <footer class="footer">
+                <div class="container-fluid">
+                    <p class="copyright pull-right">
+                        &copy;
+                        <script>document.write(new Date().getFullYear())</script> IM A FOOTER
+                    </p>
+                </div>
+            </footer>
+
+
+        </div>
+    </div>
+
+</body>
+
+@Scripts.Render("~/Scripts/template")
+
+</html>
