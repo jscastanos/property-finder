@@ -1,0 +1,230 @@
+﻿@{
+    ViewBag.Title = "AccountValidation";
+}
+
+
+<link href="~/Content/sweetalert.css" rel="stylesheet" />
+
+<script src="~/Scripts/angular/ng-app.js"></script>
+<script src="~/Scripts/angular/AccountValidation.js"></script>
+<script src="~/Scripts/template/sweet_alert.min.js"></script>
+<div class="row" ng-app="PF" ng-controller="AccountValidation" ng-init="init()">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Account Categories</h4>
+            </div>
+            <div class="card-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul class="nav nav-pills nav-pills-success nav-stacked">
+                            <li class="active" ng-click="vUsersAccount(1)"><a href="" data-toggle="tab" aria-expanded="true">Seller</a></li>
+                            <li class="" ng-click="vUsersAccount(2)"><a href="" data-toggle="tab" aria-expanded="false">Buyer</a></li>
+
+                         
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-8" ng-if="tabSeller == 1">
+        <div class="card">
+
+            <div class="card-content">
+                <ul class="nav nav-pills nav-pills-warning">
+                    <li class="active" ng-click="cTab(1,0)"><a href="#review" data-toggle="tab">Review</a></li>
+                    <li ng-click="cTab(1,1)"><a href="#verified" data-toggle="tab">Verified accounts</a></li>
+                    
+                    <li class="pull-right">
+                        <form >
+                            <div ng-show="typeSeller == 0" class="form-group form-search is-empty">
+                                <input style="width:320px" type="text" ng-model="fullname" class="form-control" placeholder=" Search ">
+                                <span class="material-input"></span>
+                            </div>
+                        
+                            <div ng-show="typeSeller == 1" class="form-group form-search is-empty">
+                                <input style="width:320px" type="text" ng-model="vfullname" class="form-control" placeholder="Search ">
+                                <span class="material-input"></span>
+                            </div>
+
+                        </form>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="review">
+                        <table class="table">
+                            <tbody>
+                                <tr ng-repeat="data in Sellers | filter: fullname" id="seller">
+                                    <td>
+                                        <div class="user">
+                                            <div class="photo">
+                                                <img src="~/img/faces/avatar.jpg" style="border-radius: 50%;width: 100%;width: 34px; height: 34px;">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div style="font-weight:bold">
+                                            {{data.fullname}}
+                                        </div>
+                                        <span class="text-muted">{{data.Address}}</span>
+                                    </td>
+                                    <td class="td-actions text-right">
+                                        <button ng-click="viewProfile(data.UserId)" class="btn btn-default btn-sm">View profile</button>
+                                    </td>
+                                </tr>
+                                <tr ng-show="Sellers.length == 0 || isElementExistsAtDOM('seller') != true">
+                                    <td class="check-mail text-center">
+                                        <h3 style="color:red">
+                                            No data found.
+                                        </h3>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane" id="verified">
+                        <table class="table">
+                            <tbody>
+                                <tr ng-repeat="data in vSellers | filter: vfullname" id="vseller">
+                                    <td>
+                                        <div class="user">
+                                            <div class="photo">
+                                                <img src="~/img/faces/avatar.jpg" style="border-radius: 50%;width: 100%;width: 34px; height: 34px;">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div style="font-weight:bold">
+                                            {{data.vfullname}}
+                                            <span class="label label-{{data.Status == 1? 'success':'danger'}}">
+                                                <span style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">{{data.Status == 1? 'Active':'Deactivated'}}</span>
+                                            </span>
+                                        </div>
+                                        <span class="text-muted">{{data.Address}}</span>
+                                    </td>
+                                    <td class="td-actions text-right">
+                                        <button ng-click="cActivateDeactivateAccount(1,$index,0,data.UserId)" ng-if="data.Status == 1" class="btn btn-danger btn-sm">Deactivate</button>
+                                        <button ng-click="cActivateDeactivateAccount(1,$index,1,data.UserId)" ng-if="data.Status == 2" class="btn btn-success btn-sm">Activate</button>
+                                    </td>
+                                </tr>
+                                <tr ng-show="vSellers.length == 0 || isElementExistsAtDOM('vseller') != true">
+                                    <td class="check-mail text-center">
+                                        <h3 style="color:red">
+                                            No data found.
+                                        </h3>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="col-md-8" ng-if="tabBuyer == 1">
+        <div class="card">
+
+            <div class="card-content">
+                <ul class="nav nav-pills nav-pills-warning">
+                    <li class="active" ng-click="cTab(2,0)"><a href="#review" data-toggle="tab">Review</a></li>
+                    <li ng-click="cTab(2,1)"><a href="#verified" data-toggle="tab">Verified accounts</a></li>
+
+                    <li class="pull-right">
+                        <form>
+                            <div ng-show="typeBuyer == 0" class="form-group form-search is-empty">
+                                <input style="width:320px" type="text" ng-model="fullname" class="form-control" placeholder=" Search ">
+                                <span class="material-input"></span>
+                            </div>
+
+                            <div ng-show="typeBuyer == 1" class="form-group form-search is-empty">
+                                <input style="width:320px" type="text" ng-model="vfullname" class="form-control" placeholder="Search ">
+                                <span class="material-input"></span>
+                            </div>
+
+                        </form>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="review">
+                        <table class="table">
+                            <tbody>
+                                <tr ng-repeat="data in Buyers | filter: fullname" id="buyer">
+                                    <td>
+                                        <div class="user">
+                                            <div class="photo">
+                                                <img src="~/img/faces/avatar.jpg" style="border-radius: 50%;width: 100%;width: 34px; height: 34px;">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div style="font-weight:bold">
+                                            {{data.fullname}}
+                                        </div>
+                                        <span class="text-muted">{{data.Address}}</span>
+                                    </td>
+                                    <td class="td-actions text-right">
+                                        <button ng-click="viewProfile(data.UserId)" class="btn btn-default btn-sm">View profile</button>
+                                    </td>
+                                </tr>
+                                <tr ng-show="Buyers.length == 0 || isElementExistsAtDOM('buyer') != true">
+                                    <td class="check-mail text-center">
+                                        <h3 style="color:red">
+                                            No data found.
+                                        </h3>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane" id="verified">
+                        <table class="table">
+                            <tbody>
+                                <tr ng-repeat="data in vBuyers | filter: vfullname" id="vbuyer">
+                                    <td>
+                                        <div class="user">
+                                            <div class="photo">
+                                                <img src="../img/faces/avatar.jpg" style="border-radius: 50%;width: 100%;width: 34px; height: 34px;">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div style="font-weight:bold">
+                                            {{data.vfullname}}
+                                        </div>
+                                        <span class="text-muted">{{data.Address}}</span>
+                                    </td>
+                                    <td class="td-actions text-right">
+                                        <button ng-click="cActivateDeactivateAccount(2,$index,0,data.UserId)" ng-if="data.Status == 1" class="btn btn-danger btn-sm">Deactivate</button>
+                                        <button ng-click="cActivateDeactivateAccount(2,$index,1,data.UserId)" ng-if="data.Status == 2" class="btn btn-success btn-sm">Activate</button>
+                                    </td>
+                                </tr>
+                                <tr ng-show="vBuyers.length == 0 || isElementExistsAtDOM('vbuyer') != true">
+                                    <td class="check-mail text-center">
+                                        <h3 style="color:red">
+                                            No data found.
+                                        </h3>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
