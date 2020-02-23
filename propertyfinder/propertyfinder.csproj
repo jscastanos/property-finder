@@ -20,6 +20,8 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <Use64BitIISExpress />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -39,10 +41,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -112,23 +121,47 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="API\" />
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
+    <Folder Include="Views\Registration\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\RegistrationController.cs" />
+    <Compile Include="API\tUsersController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\ExtensionMethods.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\SessionTimeoutAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202002211411028_InitialCreate.cs" />
+    <Compile Include="Migrations\202002211411028_InitialCreate.Designer.cs">
+      <DependentUpon>202002211411028_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\PropertyFinder.cs" />
+    <Compile Include="Models\tComment.cs" />
+    <Compile Include="Models\tNotification.cs" />
+    <Compile Include="Models\tPersonInfo.cs" />
+    <Compile Include="Models\tPost.cs" />
+    <Compile Include="Models\tPostImage.cs" />
+    <Compile Include="Models\tPropertyType.cs" />
+    <Compile Include="Models\tServiceEntity.cs" />
+    <Compile Include="Models\tUser.cs" />
+    <Compile Include="Models\tUserValidationId.cs" />
+    <Compile Include="Models\vUserAcctStatu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\cropper.css" />
+    <Content Include="Content\cropper.min.css" />
+    <Content Include="Content\croppie.css" />
     <Content Include="Content\material-dashboard98f3.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\font-awesome\css\font-awesome.css" />
@@ -155,6 +188,7 @@
     <Content Include="img\image_placeholder.jpg" />
     <Content Include="img\lock.jpg" />
     <Content Include="img\login.jpg" />
+    <Content Include="img\nophoto.png" />
     <Content Include="img\placeholder.jpg" />
     <Content Include="img\product1.jpg" />
     <Content Include="img\product2.jpg" />
@@ -164,13 +198,20 @@
     <Content Include="img\sidebar-2.jpg" />
     <Content Include="img\sidebar-3.jpg" />
     <Content Include="img\sidebar-4.jpg" />
+    <Content Include="Scripts\angular\AccountValidation.js" />
+    <Content Include="Scripts\angular\LogIn.js" />
+    <Content Include="Scripts\angular\ng-register.js" />
     <Content Include="Scripts\angular\angular.min.js" />
     <Content Include="Scripts\angular\ng-app.js" />
+    <Content Include="Scripts\angular\SignUp.js" />
     <Content Include="Scripts\template\arrive.min.js" />
     <Content Include="Scripts\template\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\template\bootstrap-notify.js" />
     <Content Include="Scripts\template\bootstrap.min.js" />
     <Content Include="Scripts\template\chartist.min.js" />
+    <Content Include="Scripts\angular\cropImage.js" />
+    <Content Include="Scripts\template\cropper.min.js" />
+    <Content Include="Scripts\template\croppie.js" />
     <Content Include="Scripts\template\demo.js" />
     <Content Include="Scripts\template\fullcalendar.min.js" />
     <Content Include="Scripts\template\jasny-bootstrap.min.js" />
@@ -188,6 +229,7 @@
     <Content Include="Scripts\template\nouislider.min.js" />
     <Content Include="Scripts\template\perfect-scrollbar.jquery.min.js" />
     <Content Include="Scripts\template\sweetalert2.js" />
+    <Content Include="Scripts\template\sweet_alert.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -222,6 +264,50 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_sidebar.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Account\Register.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Account\UserProfile.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_CropModal.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_CustomScriptBundle.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Account\Login.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_LoginLayout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_BuyerNav.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_SellerNav.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Account\SignUp.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Admin\AccountValidation.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202002211411028_InitialCreate.resx">
+      <DependentUpon>202002211411028_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_LayoutAdditionalScript.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_CropperModal.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

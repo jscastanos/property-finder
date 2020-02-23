@@ -1,0 +1,322 @@
+﻿@{
+    ViewBag.Title = "SignUp";
+    Layout = null;
+}
+
+
+
+
+
+
+
+
+<head>
+
+
+
+
+
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <title>Property Finder | Sign up</title>
+
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+
+    <!-- Bootstrap core CSS     -->
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
+
+    <!--  Material Dashboard CSS    -->
+    <link href="~/Content/material-dashboard98f3.css" rel="stylesheet" />
+
+
+    <!--     Fonts and icons     -->
+    <link href="~/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/fonts/material-icons/material-icons.css" rel="stylesheet" />
+
+    <script src="~/Scripts/angular/angular.min.js"></script>
+    <script src="~/Scripts/angular/ng-app.js"></script>
+    <script src="~/Scripts/angular/SignUp.js"></script>
+</head>
+
+<body class="off-canvas-sidebar" ng-app="PF" ng-controller="SignUp" ng-init="init()">
+
+    <nav class="navbar navbar-primary navbar-transparent navbar-absolute">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-example-2">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <a class="navbar-brand" href="">Property Finder</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li class=" active ">
+                        <a href="">
+                            <i class="material-icons">person_add</i>
+                            Sign up
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="" ng-click="gotToLogInPage()">
+                            <i class="material-icons">fingerprint</i>
+                            Login
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="wrapper wrapper-full-page">
+        <div class="full-page register-page" filter-color="black" data-image="../img/realestate.jpg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
+
+                        <div class="card card-signup">
+                            <h2 class="card-title text-center">Create free account</h2>
+                            <div class="row">
+                                <div class="col-md-5 col-md-offset-1">
+                                    <div class="card-content">
+
+                                        <div class="info info-horizontal">
+                                            <div class="icon icon-info">
+                                                <i class="material-icons">public</i>
+                                            </div>
+                                            <div class="description">
+                                                <h4 class="info-title">Posting</h4>
+                                                <p class="description">
+                                                    Post your property to the public through online and meet potential buyers.
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="info info-horizontal">
+
+                                            <div class="icon icon-rose">
+                                                <i class="material-icons">smartphone</i>
+                                            </div>
+                                            <div class="description">
+                                                <h4 class="info-title">Mobile</h4>
+                                                <p class="description">
+                                                    The buyer can now easily find available property using mobile with google map technology.
+                                                </p>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+
+
+                                    <form class="form" ng-submit="createAccount()">
+                                        <div class="card-content">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <i class="material-icons">face</i>
+                                                </span>
+                                                <input ng-change="ValidateUsername()" ng-model="user.Username" type="text" class="form-control" placeholder="Username" required>
+                                                <span ng-if="user.Username.length < 5" style="color:red">*Must be 5 characters or more...</span>
+                                                <span ng-if="validUsername == 1" style="color:red">*Username already taken</span>
+                                            </div>
+
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <i class="material-icons">lock_outline</i>
+                                                </span>
+                                                <input ng-model="user.Password" type="Password" class="form-control" placeholder="Password" required>
+                                                <span ng-if="user.Password.length < 5" style="color:red">*Must be 5 characters or more...</span>
+                                            </div>
+
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <i class="material-icons">lock_outline</i>
+                                                </span>
+                                                <input ng-model="cpassword" ng-change="validation()" type="Password" placeholder="Confirm Password" required class="form-control" />
+                                                <span ng-if="valid == true && user.Password.length >= 5 && cpassword != null " style="color:red">*Password not match</span>
+                                                <span ng-if="valid == true && user.Password.length >= 5 && cpassword == null " style="color:red">*Enter your password to confirm</span>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" name="optionsCheckboxes" ng-change="cBox(chkBox)" ng-model="chkBox">
+                                                    <span class="text-info">I agree to the terms and conditions.</span>
+                                                </label>
+                                            </div>
+                                          
+                                            <div class="social text-center">
+                                                <h4> Get started as...</h4>
+                                                <button ng-disabled="chkBox != true" class="btn btn-default btn-round" ng-click="selectAccountType(1,0)" ng-if="btnSeller == 1">
+
+                                                    Seller
+                                                    <div class="ripple-container"></div>
+                                                </button>
+                                                <button ng-disabled="chkBox != true" class="btn btn-primary btn-round" ng-click="selectAccountType(1,1)" ng-if="btnSeller == 0">
+
+                                                    Seller
+                                                    <div class="ripple-container"></div>
+                                                </button>
+
+                                                <button ng-disabled="chkBox != true" class="btn btn-default btn-round" ng-click="selectAccountType(2,0)" ng-if="btnBuyer == 1">
+
+                                                    Buyer
+                                                    <div class="ripple-container"></div>
+                                                </button>
+                                                <button ng-disabled="chkBox != true" class="btn btn-primary btn-round" ng-click="selectAccountType(2,1)" ng-if="btnBuyer == 0">
+
+                                                    Buyer
+                                                    <div class="ripple-container"></div>
+                                                </button>
+
+
+                                            </div>
+                                            <!-- If you want to add a checkbox to this form, uncomment this code -->
+
+
+                                        </div>
+                                        <div >
+                                            <hr />
+                                        </div>
+                                        <div class="footer text-center">
+                                            <button type="submit" ng-disabled="chkBox != true || user.Password != cpassword || (user.Password == null && cpassword == null) ||  user.AccountTypeId == 0 || validUsername == 1 || user.Username.length < 5" class="btn btn-success btn-round">Get Started</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+
+</body>
+
+<!--   Core JS Files   -->
+
+<script src="~/Scripts/template/jquery.min.js"></script>
+<script src="~/Scripts/template/bootstrap.min.js"></script>
+<script src="~/Scripts/template/material.min.js"></script>
+<script src="~/Scripts/template/perfect-scrollbar.jquery.min.js"></script>
+
+
+
+<!-- Library for adding dinamically elements -->
+<script src="~/Scripts/template/arrive.min.js"></script>
+
+<!-- Forms Validations Plugin -->
+<script src="~/Scripts/template/jquery.validate.min.js"></script>
+
+<!--  Plugin for Date Time Picker and Full Calendar Plugin-->
+<script src="~/Scripts/template/moment.min.js"></script>
+
+<!--  Charts Plugin, full documentation here: https://gionkunz.github.io/chartist-js/ -->
+<script src="~/Scripts/template/chartist.min.js"></script>
+
+<!--  Plugin for the Wizard, full documentation here: https://github.com/VinceG/twitter-bootstrap-wizard -->
+<script src="~/Scripts/template/jquery.bootstrap-wizard.js"></script>
+
+<!--  Notifications Plugin, full documentation here: http://bootstrap-notify.remabledesigns.com/    -->
+<script src="~/Scripts/template/bootstrap-notify.js"></script>
+
+<!--   Sharrre Library    -->
+<script src="~/Scripts/template/jquery.sharrre.js"></script>
+
+<!--  Plugin for the DateTimePicker, full documentation here: https://eonasdan.github.io/bootstrap-datetimepicker/ -->
+<script src="~/Scripts/template/bootstrap-datetimepicker.js"></script>
+
+<!-- Vector Map plugin, full documentation here: http://jvectormap.com/documentation/ -->
+<script src="~/Scripts/template/jquery-jvectormap.js"></script>
+
+<!-- Sliders Plugin, full documentation here: https://refreshless.com/nouislider/ -->
+<script src="~/Scripts/template/nouislider.min.js"></script>
+
+
+
+<!--  Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
+<script src="~/Scripts/template/jquery.select-bootstrap.js"></script>
+
+<!--  DataTables.net Plugin, full documentation here: https://datatables.net/    -->
+<script src="~/Scripts/template/jquery.datatables.js"></script>
+
+<!-- Sweet Alert 2 plugin, full documentation here: https://limonte.github.io/sweetalert2/ -->
+<script src="~/Scripts/template/sweetalert2.js"></script>
+
+<!-- Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
+<script src="~/Scripts/template/jasny-bootstrap.min.js"></script>
+
+<!--  Full Calendar Plugin, full documentation here: https://github.com/fullcalendar/fullcalendar    -->
+<script src="~/Scripts/template/fullcalendar.min.js"></script>
+
+<!-- Plugin for Tags, full documentation here: https://github.com/bootstrap-tagsinput/bootstrap-tagsinputs  -->
+<script src="~/Scripts/template/jquery.tagsinput.js"></script>
+
+<!-- Material Dashboard javascript methods -->
+<script src="~/Scripts/template/material-dashboard98f3.js"></script>
+
+<!-- Material Dashboard DEMO methods, don't include it in your project! -->
+<script src="~/Scripts/template/demo.js"></script>
+
+<script>
+    // Facebook Pixel Code Don't Delete
+    !function (f, b, e, v, n, t, s) {
+        if (f.fbq) return; n = f.fbq = function () {
+            n.callMethod ?
+            n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+        }; if (!f._fbq) f._fbq = n;
+        n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = []; t = b.createElement(e); t.async = !0;
+        t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s)
+    }(window,
+    document, 'script', '//connect.facebook.net/en_US/fbevents.js');
+
+    try {
+        fbq('init', '111649226022273');
+        fbq('track', "PageView");
+
+    } catch (err) {
+        console.log('Facebook Track Error:', err);
+    }
+
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+    $().ready(function () {
+        demo.checkFullPageBackgroundImage();
+
+        setTimeout(function () {
+            // after 1000 ms we add the class animated to the login/register card
+            $('.card').removeClass('card-hidden');
+        }, 700)
+    });
+</script>
+
+
+
+
+
+
+
+
