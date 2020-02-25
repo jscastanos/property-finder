@@ -19,6 +19,5 @@ namespace propertyfinder.Controllers
             string guid = Guid.NewGuid().ToString().Replace("-", string.Empty).Replace("+", string.Empty).Substring(0, length).ToUpper();
             return guid;
         }
-
     }
 }

@@ -1,0 +1,37 @@
+﻿
+
+
+<div id="cameraModal" data-backdrop="static" class="modal fade" style="padding-right: 15px;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h5 class="modal-title">Camera</h5>
+            </div>
+
+            <div class="modal-body text-center" style="height: 500px;">
+                <div class="col-sm-12">
+                    <div class="caption text-center">
+                        <h6 class="text-semibold no-margin">Take a Photo </h6>
+                        <div class="video-wrap">
+                            <video style="width: 100%; " id="video" playsinline autoplay></video>
+                        </div>
+                        <!-- Trigger canvas web API -->
+                        <div class="controller">
+                            <button class="btn btn-primary" type="button" id="snap" style="display: none;" data-toggle="modal" data-target="#modal_default">Capture</button>
+                        </div>
+                        <!-- Webcam video snapshot -->
+                        <canvas style="display: none;" id="canvas" width="640" height="480"></canvas>
+                        <div id="percentStatus"></div>
+                        <progress id="fileProgress" style="display: none; width: 100%;"></progress>
+                    </div>
+                </div>
+            </div>
+
+            @*<div class="modal-footer">
+                <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                <button onclick="saveChanges()" type="button" class="btn btn-primary">Save changes</button>
+            </div>*@
+        </div>
+    </div>
+</div>
