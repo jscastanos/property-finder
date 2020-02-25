@@ -28,6 +28,11 @@ namespace propertyfinder.Controllers
         {
             return View();
         }
+        [SessionTimeout]
+        public ActionResult UserProfile()
+        {
+            return View();
+        }
         [HttpPost]
         public ActionResult auth(tUser u)
         {
@@ -37,8 +42,9 @@ namespace propertyfinder.Controllers
                 var userInfo = db.tPersonInfoes.Where(p => p.UserId == t.UserId).FirstOrDefault();
 
                 Session["userId"] = t.UserId;
-                Session["fullName"] = fullName(userInfo.Firstname, userInfo.Middlename, userInfo.Lastname);
+                Session["fullName"] = fullName(userInfo.Firstname, userInfo.Lastname);
                 Session["Role"] = t.AccountTypeId;
+                Session["userImg"] = userInfo.ProfileImg;
             } else
             {
                 var t = db.tUsers.Where(x => x.Username == u.Username && x.Password == u.Password).FirstOrDefault();
@@ -50,21 +56,57 @@ namespace propertyfinder.Controllers
                     return RedirectToAction("Index", "Home");
                 }
                 Session["userId"] = t.UserId;
-                Session["fullName"] = fullName(userInfo.Firstname, userInfo.Middlename, userInfo.Lastname);
+                Session["fullName"] = fullName(userInfo.Firstname, userInfo.Lastname);
                 Session["Role"] = t.AccountTypeId;
             }
             return RedirectToAction("Index", "Home");
         }
 
-        public string fullName(string a, string b, string c)
+        public string fullName(string a, string c)
         {
-            return a + " " + b + " " + c;
+            return a + "  " + c;
         }
         public ActionResult logout()
         {
             Session.Abandon();
             Session.Clear();
             return RedirectToAction("Login");
+        }
+
+        [AllowAnonymous]
+        public ActionResult RetrieveImage(string id, int facingType)
+        {
+            byte[] img = null;
+            if (facingType == 2)
+            {
+                var data = db.tPersonInfoes.SingleOrDefault(p => p.UserId == id);
+
+                img = data.ProfileImg;
+
+                return File(img, "image/jpeg");
+
+            } else {
+                var data = db.tUserValidationIds.Where(x => x.PersonId == id).ToArray();
+
+                switch (facingType)
+                {
+                    case 0:
+                        img = data[0].Image;
+                        break;
+                    case 1:
+                        img = data[1].Image;
+                        break;
+                }
+
+                if (img != null)
+                {
+                    return File(img, "image/jpeg");
+                }
+                else
+                {
+                    return File("../img/nophoto.png", "image/png");
+                }
+            }
         }
     }
 }

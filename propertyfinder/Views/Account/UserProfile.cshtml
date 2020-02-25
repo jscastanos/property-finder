@@ -2,175 +2,54 @@
 @{
     ViewBag.Title = "UserProfile";
 }
+<script src="~/Scripts/template/sweet_alert.min.js"></script>
+<div class="row" ng-controller="upCtrl">
+    <div class="col-md-3">
+        <div class="card card-profile">
+            <div class="card-avatar">
+                <a href="">
+                    <img class="img" src="../Account/RetrieveImage?id={{user.UserId}}&facingType=2" onerror="this.src='../img/nophoto.png'">
+                </a>
+            </div>
 
-<div class="row">
-    <div class="col-md-8 col-md-offset-2">
+            <div class="card-content">
+                <h4>{{profile.Firstname}} {{profile.Middlename}} {{profile.Lastname}}</h4>
+                <h4 class="card-title text-gray" style="font-size: 14px">{{profile.ContactNo}}</h4>
+                <p class="description">
+                    {{profile.Address}}
+                </p>
+                @if ((int)Session["Role"] == 3)
+                {
+                    <a href="" ng-show="user.Status == 0" ng-click="verify()" class="btn btn-rose btn-round">Verify<div class="ripple-container"></div></a>
+                    <a href="" ng-show="user.Status == 1" style="cursor: default" class="btn btn-success btn-round text-gray">Verified<div class="ripple-container"></div></a>
+                }
+                else
+                {
+                    <a href="" ng-show="user.Status == 1" style="cursor: default" class="btn btn-success btn-round text-success">You are Verified<div class="ripple-container"></div></a>
+                    <a href="" ng-show="user.Status == 0" style="cursor: default" class="btn btn-danger btn-round text-danger">Pending - Not Verified<div class="ripple-container"></div></a>
+                }
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
         <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">User Profile</h4>
+            <div class="card-header card-header-icon" data-background-color="rose">
+                <i class="material-icons">perm_identity</i>
             </div>
             <div class="card-content">
+                <h4 class="card-title">Edit Profile - <small class="category">Complete your profile</small></h4>
                 <div class="row">
-                    <div class="col-md-4">
-                        <ul class="nav nav-pills nav-pills-icons nav-pills-rose nav-stacked" role="tablist">
-                            <!--
-                                color-classes: "nav-pills-primary", "nav-pills-info", "nav-pills-success", "nav-pills-warning","nav-pills-danger"
-                            -->
-                            <li class="active">
-                                <a href="#dashboard-2" role="tab" data-toggle="tab" aria-expanded="true">
-                                    <i class="material-icons">dashboard</i>
-                                    User Information
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="#schedule-2" role="tab" data-toggle="tab" aria-expanded="false">
-                                    <i class="material-icons">schedule</i>
-                                    Photo
-                                </a>
-                            </li>
-                        </ul>
+                    <div class="col-sm-6">
+                        <img data-enlargable style="cursor: pointer; max-height: 414px; border: 1px solid #e61d67bf;" src="../Account/RetrieveImage?id={{profile.PersonId}}&facingType=0" alt="Alternate Text" onerror="this.src='../img/nophoto.png'" />
+                        <div class="text-center">
+                            <h4 class="text-gray">Photo Verification Front</h4>
+                        </div>
                     </div>
-                    <div class="col-md-8">
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="dashboard-2">
-                                <h4 class="card-title">Edit Profile - <small class="category">Complete your profile</small></h4>
-                                <form>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group label-floating is-empty">
-                                                <label class="control-label">Fist Name</label>
-                                                <input type="text" class="form-control">
-                                                <span class="material-input"></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group label-floating is-empty">
-                                                <label class="control-label">Middle Name</label>
-                                                <input type="text" class="form-control">
-                                                <span class="material-input"></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group label-floating is-empty">
-                                                <label class="control-label">Last Name</label>
-                                                <input type="text" class="form-control">
-                                                <span class="material-input"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group label-floating is-empty">
-                                                <label class="control-label">Birthdate</label>
-                                                <input type="text" class="form-control">
-                                                <span class="material-input"></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group label-floating is-empty">
-                                                <label class="control-label">Address</label>
-                                                <input type="password" class="form-control">
-                                                <span class="material-input"></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group label-floating is-empty">
-                                                <label class="control-label">Contact Number</label>
-                                                <input type="text" class="form-control">
-                                                <span class="material-input"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group label-floating is-empty">
-                                                <label class="control-label">Adress</label>
-                                                <input type="text" class="form-control">
-                                                <span class="material-input"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-group label-floating is-empty">
-                                                <label class="control-label">City</label>
-                                                <input type="text" class="form-control">
-                                                <span class="material-input"></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group label-floating is-empty">
-                                                <label class="control-label">Country</label>
-                                                <input type="text" class="form-control">
-                                                <span class="material-input"></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group label-floating is-empty">
-                                                <label class="control-label">Postal Code</label>
-                                                <input type="text" class="form-control">
-                                                <span class="material-input"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>About Me</label>
-                                                <div class="form-group label-floating is-empty">
-                                                    <label class="control-label"> Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo.</label>
-                                                    <textarea class="form-control" rows="5"></textarea>
-                                                    <span class="material-input"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="btn btn-rose pull-right">Update Profile</button>
-                                    <div class="clearfix"></div>
-                                </form>
-                            </div>
-
-
-
-
-                            <div class="tab-pane" id="schedule-2">
-                                <div class="col-md-12">
-                                    <div class="card card-profile">
-                                        <div class="card-avatar">
-                                            <a href="../img/faces/marc.jpg">
-                                                <img class="img" src="../img/faces/marc.jpg">
-                                            </a>
-                                        </div>
-
-                                        <div class="card-content">
-                                            <h6 class="category text-gray">CEO / Co-Founder</h6>
-                                            <h4 class="card-title">Alec Thompson</h4>
-                                            <p class="description">
-                                                Don't be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...
-                                            </p>
-                                            <div class="col-sm-12">
-                                                <button type="button" class="btn btn-just-icon btn-round btn-facebook">
-                                                    <span class="btn-label">
-                                                        <i class="material-icons">keyboard_arrow_left</i>
-                                                    </span>
-                                                    <div class="ripple-container"></div>
-                                                </button>
-                                                <a href="#pablo" class="btn btn-rose btn-round">Follow</a>
-                                                <button type="button" class="btn btn-just-icon btn-round btn-facebook">
-                                                    <span class="btn-label btn-label-right">
-                                                        <i class="material-icons">keyboard_arrow_right</i>
-                                                    </span>
-                                                    <div class="ripple-container"></div>
-                                                </button>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="col-sm-6">
+                        <img data-enlargable style="cursor: pointer; max-height: 414px; border: 1px solid #e61d67bf;" src="../Account/RetrieveImage?id={{profile.PersonId}}&facingType=1" alt="Alternate Text" onerror="this.src='../img/nophoto.png'" />
+                        <div class="text-center">
+                            <h4 class="text-gray">Photo Verification Back</h4>
                         </div>
                     </div>
                 </div>
@@ -178,3 +57,46 @@
         </div>
     </div>
 </div>
+
+<script>
+    app.controller("upCtrl", ["$scope", "$http", function (s, h) {
+
+        var user = location.search.split('=')[1];
+
+        s.getData = function () {
+            h.get("../api/Profile?uid=" + user + "").then(function (d) {
+                s.profile = d.data.personInfo;
+                s.user = d.data.user;
+            });
+        }
+        s.getData();
+
+        s.verify = function () {
+            var con = confirm("Are you sure you want to verify?");
+            if (con) {
+                h.post("../api/Profile?user=" + user + "").then(function (d) {
+                    swal("Verified!", "Data has been successfully verified.", "success");
+                    s.getData();
+                });
+            } else {
+                return false;
+            }
+        }
+
+        $('img[data-enlargable]').addClass('img-enlargable').click(function () {
+            var src = $(this).attr('src');
+            $('<div>').css({
+                background: 'RGBA(0,0,0,.8) url(' + src + ') no-repeat center',
+                backgroundSize: 'contain',
+                width: '100%', height: '100%',
+                position: 'fixed',
+                zIndex: '10000',
+                top: '0', left: '0',
+                cursor: 'zoom-out'
+            }).click(function () {
+                $(this).remove();
+            }).appendTo('body');
+        });
+
+    }]);
+</script>

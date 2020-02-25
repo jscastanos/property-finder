@@ -25,6 +25,7 @@
     <script src="~/Scripts/angular/ng-app.js"></script>
     @if (Request.Url.AbsoluteUri.Split('/')[4] == "Register")
     {
+        
         <script src="~/Scripts/angular/ng-register.js"></script>
     }
 
@@ -45,19 +46,19 @@
             </div>
             <div class="collapse navbar-collapse">
                 @*<ul class="nav navbar-nav navbar-right">
-                    <li id="registerLI" class="active">
-                        <a href="../Account/Register">
-                            <i class="material-icons">person_add</i>
-                            Register
-                        </a>
-                    </li>
-                    <li id="loginLI" class="">
-                        <a href="../Account/Login">
-                            <i class="material-icons">fingerprint</i>
-                            Login
-                        </a>
-                    </li>
-                </ul>*@
+                        <li id="registerLI" class="active">
+                            <a href="../Account/Register">
+                                <i class="material-icons">person_add</i>
+                                Register
+                            </a>
+                        </li>
+                        <li id="loginLI" class="">
+                            <a href="../Account/Login">
+                                <i class="material-icons">fingerprint</i>
+                                Login
+                            </a>
+                        </li>
+                    </ul>*@
             </div>
         </div>
     </nav>
@@ -73,8 +74,8 @@
                 </div>
             </div>
 
-            @Html.Partial("_CropModal")
-            @Html.Partial("_CropperModal")
+            @*@Html.Partial("_CropModal")*@
+
             <footer class="footer">
                 <div class="container">
                     <p class="copyright pull-right">
@@ -87,8 +88,11 @@
     </div>
 
     @Html.Partial("_CustomScriptBundle")
-    <link href="~/Content/croppie.css" rel="stylesheet" />
-    <script src="~/Scripts/template/croppie.js"></script>
+    
+    @Html.Partial("_CropperModal")
+    @Html.Partial("_CameraModal")
+    @*<link href="~/Content/croppie.css" rel="stylesheet" />
+        <script src="~/Scripts/template/croppie.js"></script>*@
 </body>
 </html>
 

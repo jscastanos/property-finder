@@ -1,8 +1,12 @@
 ﻿<!-- Modal -->
-<script src="~/Scripts/cropper.min.js"></script>
+@*<script src="~/Scripts/template/jquery.min.js"></script>*@
+@*<link href="~/Content/cropper.min.css" rel="stylesheet" />*@
+@*<script src="~/Scripts/template/cropper.min.js"></script>*@
 @*<script src="~/Scripts/bootbox.min.js"></script>*@
-<script src="~/Scripts/components_modals.js"></script>
+<script src="~/Scripts/template/components_modals.js"></script>
 @*<script src="~/Scripts/sweet_alert.min.js"></script>*@
+
+
 <div id="cropperModal" data-backdrop="static" class="modal fade" style="padding-right: 15px;">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -11,7 +15,7 @@
                 <h5 class="modal-title">Crop your Photo</h5>
             </div>
 
-            <div class="modal-body text-center">
+            <div class="modal-body text-center" style="height: 500px; width: 500px">
 
                 <div id="imageCrop" style="height: 500%; width: 555%;">
 
@@ -25,3 +29,4 @@
         </div>
     </div>
 </div>
+

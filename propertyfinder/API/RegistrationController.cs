@@ -73,12 +73,11 @@ namespace propertyfinder.API
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-
-
         //Register class
         public class Person {
             public string frontImage { get; set; }
             public string backImage { get; set; }
+            public string profilepic { get; set; }
             public string Firstname { get; set; }
             public string Middlename { get; set; }
             public string Lastname { get; set; }
@@ -87,7 +86,7 @@ namespace propertyfinder.API
             public string ContactNo { get; set; }
             public string prodDescription1 { get; set; }
             public string prodDescription2 { get; set; }
-            public string userId { get; set; }
+            //public string userId { get; set; }
         }
 
         // POST: api/Registration
@@ -96,11 +95,29 @@ namespace propertyfinder.API
         public IHttpActionResult PosttPersonInfo(Person p)
         {
             tUserValidationId tuv = new tUserValidationId();
-            byte[] frontimageBytes = p.frontImage != null ? Convert.FromBase64String(p.frontImage) : null;
-            byte[] backimageBytes = p.backImage != null ? Convert.FromBase64String(p.backImage) : null;
-            tPersonInfo tp = new tPersonInfo();
 
-            string user = HttpContext.Current.Request.Cookies["uid"].Value;
+            //string convert = hdnImage.Replace("data:image/png;base64,", String.Empty);
+            byte[] profileImageBytes = null;
+            p.frontImage = removeString(p.frontImage);
+            p.backImage = removeString(p.backImage);
+
+            if (p.profilepic.Length > 20)
+            {
+                p.profilepic = removeString(p.profilepic);
+            } else
+            {
+                p.profilepic = null;
+            }
+
+                if(p.profilepic != null)
+                {
+                   profileImageBytes = p.profilepic != null ? Convert.FromBase64String(p.profilepic) : null;
+                }
+                byte[] frontimageBytes = p.frontImage != null ? Convert.FromBase64String(p.frontImage) : null;
+                byte[] backimageBytes = p.backImage != null ? Convert.FromBase64String(p.backImage) : null;
+                tPersonInfo tp = new tPersonInfo();
+
+                string user = HttpContext.Current.Request.Cookies["uid"].Value;
             
             //personId generate once
             string personId = em.generateCode(4);
@@ -111,6 +128,8 @@ namespace propertyfinder.API
             tp.Birthdate = p.Birthdate;
             tp.ContactNo = p.ContactNo;
             tp.DateCreated = DateTime.Now;
+            tp.Address = p.Address;
+            tp.ProfileImg = profileImageBytes;
             tp.Status = 0;
             tp.UserId = user;
            
@@ -132,8 +151,7 @@ namespace propertyfinder.API
                 tuv.ValidationId = validationId;
                 tuv.DateCreated = DateTime.Now;
                 tuv.Status = i;
-                //temporary should be session
-                tuv.CreatedBy = "asdasda";
+                tuv.CreatedBy = user;
                 db.tUserValidationIds.Add(tuv);
                 db.SaveChanges();
             }
@@ -141,6 +159,15 @@ namespace propertyfinder.API
             db.SaveChanges();
 
             return Ok(user);
+        }
+
+        public string removeString(string data)
+        {
+            if(data != null)
+            {
+                data = data.Replace("data:image/png;base64,", String.Empty).Replace("data:image/jpeg;base64,", string.Empty).Replace("data:image/jpeg;base64,", string.Empty).Replace("data:image/jpg;base64,", string.Empty);
+            }
+            return data;
         }
 
         // DELETE: api/Registration/5

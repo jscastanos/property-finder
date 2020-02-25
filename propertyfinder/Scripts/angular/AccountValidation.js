@@ -103,37 +103,37 @@
                 closeOnConfirm: false
             }
 
-            , function () {
+                , function () {
 
-                r.post("../api/tUsers/ActivateDeactivateAccount/" + action + "/" + userId).then(function (d) {
+                    r.post("../api/tUsers/ActivateDeactivateAccount/" + action + "/" + userId).then(function (d) {
 
-                    if (d.data != null) {
+                        if (d.data != null) {
 
-                        if (type == 1) {
+                            if (type == 1) {
 
-                            s.vSellers[index].Status = d.data.Status;
-                        } else if (type == 2) {
+                                s.vSellers[index].Status = d.data.Status;
+                            } else if (type == 2) {
 
-                            s.vBuyers[index].Status = d.data.Status;
+                                s.vBuyers[index].Status = d.data.Status;
+                            }
+
                         }
 
-                    }
+                        else {
 
-                    else {
+                        }
 
-                    }
-                 
 
-                })
+                    })
 
-                swal("Deactivated!", "Account has been deactivated.", "success");
-            });
+                    swal("Deactivated!", "Account has been deactivated.", "success");
+                });
 
- 
+
 
         }
 
-            // Activate
+        // Activate
         else {
 
 
@@ -151,7 +151,7 @@
 
                 r.post("../api/tUsers/ActivateDeactivateAccount/" + action + "/" + userId).then(function (d) {
 
-                
+
                     if (d.data != null) {
 
                         if (type == 1) {
@@ -162,7 +162,7 @@
                             s.vBuyers[index].Status = d.data.Status;
                         }
 
-             
+
                     }
 
                     else {
@@ -181,7 +181,7 @@
 
     s.isElementExistsAtDOM = function (id) {
 
-     
+
         if (document.getElementById(id)) {
 
             s.isElementExistsAtDOMboolean = true;
@@ -191,12 +191,11 @@
             s.isElementExistsAtDOMboolean = false;
 
         }
-     
+
         return s.isElementExistsAtDOMboolean;
     }
 
     s.viewProfile = a => {
-        location.href = "../Profile/user?uid="+ a +"";
+        location.href = "../Account/UserProfile?uid=" + a + "";
     }
-
 }]);

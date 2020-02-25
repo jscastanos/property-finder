@@ -17,7 +17,7 @@
 
     @Scripts.Render("~/Scripts/angular")
 </head>
-<body ng-app="PF">
+<body ng-app="PF" ng-cloak>
     <div class="wrapper">
 
         @RenderPage("_sidebar.cshtml")
@@ -58,6 +58,7 @@
 
 
 @Html.Partial("_LayoutAdditionalScript")
+@Html.Partial("_checkNavActive")
 @*@Scripts.Render("~/Scripts/template")*@
 
 </html>

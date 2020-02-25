@@ -1,0 +1,64 @@
+﻿.picture {
+    width: 100% !important;
+    height: 230px !important;
+    border-radius: 0 !important;
+}
+
+.customMenuPhoto:hover {
+    transition: all 1s;
+    /* animation: upOverlay;
+    animation-duration: .5s;*/
+    opacity: 1;
+}
+
+.customMenuPhoto {
+    height: 230px;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    background: #eee;
+    opacity: 0;
+}
+
+.customMenuProfilePhoto {
+    position: absolute;
+    top: 5px;
+    background: #eee;
+    opacity: 0;
+    height: 165px;
+    width: 165px;
+    margin: auto;
+    border-radius: 50%;
+    left: 195px;
+}
+
+.customMenuProfilePhoto:hover {
+    /*transition: all 1s;
+    animation: upOverlay;
+    animation-duration: .5s*/
+    opacity: 1;
+}
+
+@keyframes upOverlay {
+    from {
+        top: 50px;
+        opacity: .1;
+    }
+    to {
+        top: 0;
+        opacity: .7;
+    }
+}
+
+.picture-two {
+    width: 150px !important;
+    height: 150px !important;
+    background-color: #999999;
+    border: 4px solid #CCCCCC;
+    color: #FFFFFF;
+    border-radius: 50% !important;
+    margin: 5px auto;
+    overflow: hidden;
+    transition: all 0.2s;
+    -webkit-transition: all 0.2s;
+}

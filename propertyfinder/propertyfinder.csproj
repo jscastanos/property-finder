@@ -125,6 +125,7 @@
     <Folder Include="Views\Registration\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\ProfileController.cs" />
     <Compile Include="API\RegistrationController.cs" />
     <Compile Include="API\tUsersController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -162,6 +163,7 @@
     <Content Include="Content\cropper.css" />
     <Content Include="Content\cropper.min.css" />
     <Content Include="Content\croppie.css" />
+    <Content Include="Content\custom\picture-overlay.css" />
     <Content Include="Content\material-dashboard98f3.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\font-awesome\css\font-awesome.css" />
@@ -210,6 +212,7 @@
     <Content Include="Scripts\template\bootstrap.min.js" />
     <Content Include="Scripts\template\chartist.min.js" />
     <Content Include="Scripts\angular\cropImage.js" />
+    <Content Include="Scripts\template\components_modals.js" />
     <Content Include="Scripts\template\cropper.min.js" />
     <Content Include="Scripts\template\croppie.js" />
     <Content Include="Scripts\template\demo.js" />
@@ -308,6 +311,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_CropperModal.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_CameraModal.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_AdminNav.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_checkNavActive.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
