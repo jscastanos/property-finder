@@ -122,13 +122,13 @@
                                 <div class="col-md-5">
 
 
-                                    <form class="form" ng-submit="createAccount()">
+                                    <form class="form" ng-submit="createAccount()" autocomplete="off">
                                         <div class="card-content">
                                             <div class="input-group">
                                                 <span class="input-group-addon">
                                                     <i class="material-icons">face</i>
                                                 </span>
-                                                <input ng-change="ValidateUsername()" ng-model="user.Username" type="text" class="form-control" placeholder="Username" required>
+                                                <input ng-change="ValidateUsername()" ng-model="user.Username" name="username" type="text" class="form-control" placeholder="Username" required>
                                                 <span ng-if="user.Username.length < 5" style="color:red">*Must be 5 characters or more...</span>
                                                 <span ng-if="validUsername == 1" style="color:red">*Username already taken</span>
                                             </div>
@@ -145,7 +145,7 @@
                                                 <span class="input-group-addon">
                                                     <i class="material-icons">lock_outline</i>
                                                 </span>
-                                                <input ng-model="cpassword" ng-change="validation()" type="Password" placeholder="Confirm Password" required class="form-control" />
+                                                <input ng-model="cpassword" ng-change="validation()" name="password" type="Password" placeholder="Confirm Password" required class="form-control" />
                                                 <span ng-if="valid == true && user.Password.length >= 5 && cpassword != null " style="color:red">*Password not match</span>
                                                 <span ng-if="valid == true && user.Password.length >= 5 && cpassword == null " style="color:red">*Enter your password to confirm</span>
                                             </div>

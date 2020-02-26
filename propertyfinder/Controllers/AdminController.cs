@@ -21,5 +21,10 @@ namespace propertyfinder.Controllers
 
             return View();
         }
+
+        public ActionResult UserManagement()
+        {
+            return View();
+        }
     }
 }

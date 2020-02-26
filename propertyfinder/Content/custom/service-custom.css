@@ -1,0 +1,108 @@
+﻿.picture {
+    width: 100% !important;
+    height: 230px !important;
+    border-radius: 0 !important;
+}
+
+.customMenuPhoto:hover {
+    transition: all 1s;
+    /* animation: upOverlay;
+    animation-duration: .5s;*/
+    opacity: 1;
+}
+
+.customMenuPhoto {
+    height: 156px;
+    position: absolute;
+    width: 151px;
+    left: 55px;
+    top: 0;
+    background: #eee;
+    opacity: 0;
+    border-radius: 50%;
+    text-align: center;
+}
+
+
+@keyframes upOverlay {
+    from {
+        top: 50px;
+        opacity: .1;
+    }
+
+    to {
+        top: 0;
+        opacity: .7;
+    }
+}
+
+.picture-two {
+    width: 150px !important;
+    height: 150px !important;
+    background-color: #999999;
+    border: 4px solid #CCCCCC;
+    color: #FFFFFF;
+    border-radius: 50% !important;
+    margin: 5px auto;
+    overflow: hidden;
+    transition: all 0.2s;
+    -webkit-transition: all 0.2s;
+}
+
+
+#map {
+    position: relative;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 300px
+}
+
+.marker {
+    background-image: url('../img/mapbox-icon.png');
+    background-size: cover;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.mapboxgl-popup {
+    max-width: 200px;
+}
+
+.mapboxgl-popup-content {
+    text-align: center;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.coordinates {
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    position: absolute;
+    bottom: 40px;
+    left: 10px;
+    padding: 5px 10px;
+    margin: 0;
+    font-size: 11px;
+    line-height: 18px;
+    border-radius: 3px;
+    display: none;
+}
+
+.nav-small > li > a {
+    padding: 0;
+}
+
+
+#propertyCardAdd {
+    opacity: .5;
+}
+
+#propertyCardAdd:hover {
+    opacity: 1;
+}
+
+.propertyCardAddActive {
+    opacity: 1 !important;
+}

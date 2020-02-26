@@ -1,0 +1,395 @@
+﻿<script src="~/Scripts/template/mapbox-gl.js"></script>
+<link href="~/Content/mapbox-gl.css" rel="stylesheet" />
+<link href="~/Content/custom/service-custom.css" rel="stylesheet" />
+<script src="~/Scripts/template/sweet_alert.min.js"></script>
+
+<div class="row" ng-controller="serviceCtrl">
+    <input type="hidden" id="long" name="long" value="" />
+    <input type="hidden" id="lat" name="lat" value="" />
+    <div class="col-md-8 col-md-offset-2">
+        @*<h3 class="title text-center">Page Subcategories</h3>*@
+        <br>
+
+        <div class="nav-center">
+            <ul class="nav nav-pills nav-pills-warning nav-pills-icons nav-small" role="tablist">
+                <!--
+                    color-classes: "nav-pills-primary", "nav-pills-info", "nav-pills-success", "nav-pills-warning","nav-pills-danger"
+                -->
+                <li class="navigation-service active">
+                    <a id="navOne" href="#description-1" role="tab" data-toggle="tab" aria-expanded="true">
+                        <i class="material-icons">info</i>
+                        Add Service
+                    </a>
+                </li>
+                <li class="navigation-service">
+                    <a id="navTwo" href="#schedule-1" role="tab" data-toggle="tab" aria-expanded="false">
+                        <i class="material-icons">location_on</i>
+                        Services List
+                    </a>
+                </li>
+                <li class="navigation-service">
+                    <a id="navThree" href="#tasks-1" role="tab" data-toggle="tab" aria-expanded="false">
+                        <i class="material-icons">home</i>
+                        Property
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content">
+            <div class="tab-pane active" id="description-1">
+                <div class="card">
+                    <div class="card-header card-header-icon" data-background-color="rose">
+                        <i class="material-icons">person_pin</i>
+                    </div>
+                    <div class="card-header">
+                        <h4 class="card-title">Service Worker</h4>
+                    </div>
+                    <div class="card-content">
+                        <div class="row">
+                            <div class="col-sm-4 text-center">
+                                <div class="picture-container">
+                                    <div class="picture-two">
+                                        <img src="../img/nophoto.png" class="picture-src" id="serviceImagePreview" title="">
+                                        <input name="back" type="file" id="back-picture" onchange="browseFile(event)">
+                                    </div>
+
+                                    <div class="customMenuPhoto">
+                                        <a href="#" onclick="document.getElementById('back-picture').click()" class="btn btn-default" style="padding: 6px 12px;margin-top: 63px;">
+                                            <span style="cursor: pointer" title="Browse">
+                                                <i style="font-size: 25px" class="material-icons">folder</i>
+                                            </span><div class="ripple-container"></div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <h5 class="text-gray">Service Image</h5>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                        <div class="form-group label-floating is-empty">
+
+                                            <label class="control-label">Service Name</label>
+                                            <input ng-model="service.serviceName" type="text" class="form-control" value="">
+                                            <span class="help-block">Service Name</span>
+                                            <span class="material-input"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="btn-group bootstrap-select">
+                                            <select ng-model="service.serviceProType" class="selectpicker" data-style="btn btn-primary btn-round" data-size="7" tabindex="-98">
+                                                <option class="bs-title-option" value="">Choose Property Type</option>
+                                                <option ng-repeat="pt in propertyTypes" value="{{pt.PropertyTypeId}}">{{pt.Description}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group label-floating is-empty">
+                                            <label class="control-label">Service Address</label>
+                                            <input ng-model="service.serviceAddress" type="text" class="form-control" value="">
+                                            <span class="help-block">Service worker address.</span>
+                                            <span class="material-input"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+
+                                <div class="form-group text-center">
+                                    <h5 class="text-gray">Drag blue icon to select location</h5>
+                                </div>
+
+                                <div class="form-group">
+                                    <div id='map'></div>
+                                    <pre id="coordinates" class="coordinates"></pre>
+                                </div>
+                            </div>
+
+
+                            <div class="col-sm-12">
+                                <button type="button" class="btn btn-default" ng-click="submit()">
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <div class="form-group form-search is-empty">
+                    <input type="text" ng-model="search" class="form-control" placeholder=" Enter key to search...">
+                    <span class="material-input"></span>
+                    <span class="material-input"></span>
+                </div>
+            </div>
+
+
+            <div class="tab-pane" id="schedule-1">
+                <div class="col-sm-4" ng-repeat="sl in serviceList | filter: search">
+                    <div class="card">
+                        <div class="card-header card-header-icon" data-background-color="rose">
+                            <i class="material-icons">person_pin_circle</i>
+                        </div>
+                        <div class="card-header">
+                            <h4 class="card-title"></h4>
+                            @*<p class="category">
+                            Service worker
+                        </p>*@
+                        </div>
+                        <div class="card-content">
+                            <div style="margin-top: 30px;">
+                                <div class="picture-container">
+                                    <div class="picture-two">
+                                        <img src="../img/nophoto.png" class="picture-src" id="serviceImagePreview" title="">
+                                        <input name="back" type="file" id="back-picture" onchange="browseFile(event)">
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <h4>{{sl.ServiceEntityName}}</h4>
+                                    <p class="text-gray">{{sl.ServiceEntityAddress}}</p>
+                                    <button class="btn btn-rose">Google location</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="tab-pane" id="tasks-1">
+                <div class="row">
+                    <div class="col-sm-4" id="propertyCardAdd">
+                        <div class="card">
+                            <div class="card-header" style="padding-top: 3px">
+                                <h4 class="card-title"></h4>
+                            </div>
+                            <div class="card-content">
+                                <div style="margin-top: 30px;">
+                                    <div class="picture-container text-center">
+                                        <div style="height: 90px !important;width: 90px;text-align: center;border-radius: 50%;border: 1px solid red;background: #e91e63;color: white;position: relative;margin: auto;">
+                                            <i class="material-icons" style="width: 40px !important;height: 40px;font-size: 80px;position: relative;top: 5px;left: -20px;">house</i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="form-group is-empty">
+                                            <label class="control-label">Property Type Name</label>
+                                            <input ng-model="property.Description" type="text" class="form-control propertyTypeName" value="" placeholder="Enter property type name...">
+                                            <span class="material-input"></span>
+                                        </div>
+                                    </div>
+                                    <div class="text-center">
+                                        <p></p>
+                                        <input type="hidden" id="userID" value="@Session["userId"].ToString()" />
+                                        <input type="hidden" ng-model="property.PropertyTypeId" />
+                                        <button ng-hide="updateShow" ng-click="addPropertyType()" class="btn btn-success">Add</button>
+                                        <button ng-show="updateShow" ng-click="update(pt.PropertyTypeId, 1)" title="Save" class="btn btn-success btn-round">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4" ng-repeat="pt in propertyTypes | filter: search">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title"></h4>
+                            </div>
+                            <div class="card-content">
+                                <div style="margin-top: 30px;">
+                                    <div class="picture-container text-center">
+                                        <div style="height: 90px !important;width: 90px;text-align: center;border-radius: 50%;border: 1px solid red;background: #e91e63;color: white;position: relative;margin: auto;">
+                                            <i class="material-icons" style="width: 40px !important;height: 40px;font-size: 80px;position: relative;top: 5px;left: -20px;">house</i>
+                                        </div>
+                                    </div>
+                                    <div style="margin-top: 20px">
+                                        <div class="text-center">
+                                            <p style="font-size: 10px;" class="text-gray">Property Type Name</p>
+                                            <h6>{{pt.Description}}</h6>
+                                        </div>
+                                    </div>
+                                    @*<div class="form-group is-empty" ng-show="updateShow">
+                                    <label class="control-label">Property Type Name</label>
+                                    <input ng-model="property.Description" type="text" class="form-control propertyTypeName" value="" placeholder="Enter property type name...">
+                                    <span class="material-input"></span>
+                                </div>*@
+                                    <div class="text-center">
+                                        <p></p>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <button ng-click="update(pt.PropertyTypeId, 0)" title="Update" class="btn btn-default btn-round">Update</button>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <button ng-click="remove(pt.PropertyTypeId)" title="Remove" class="btn btn-rose btn-round"><i class="material-icons">delete</i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94cHJleTIzIiwiYSI6ImNrNzIwamRnaTBidGUza21vZTdhZHdxeG0ifQ.vQ3z31kzRvHJMTcd9OAwNw';
+
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/light-v10',
+        center: [125.81, 7.442],
+        zoom: 15
+    });
+
+    map.addControl(new mapboxgl.FullscreenControl());
+
+    var geojson = {
+        type: 'FeatureCollection'
+    };
+    var marker = new mapboxgl.Marker({
+        draggable: true
+    })
+        .setLngLat([125.81, 7.442])
+        .addTo(map);
+
+    function onDragEnd() {
+        var lngLat = marker.getLngLat();
+        $("#long").val(lngLat.lng);
+        $("#lat").val(lngLat.lat);
+        coordinates.style.display = 'block';
+        coordinates.innerHTML =
+            'Longitude: ' + lngLat.lng + '<br />Latitude: ' + lngLat.lat;
+    }
+
+    marker.on('dragend', onDragEnd);
+
+</script>
+
+<script>
+    app.controller("serviceCtrl", ["$scope", "$http", function (s, h) {
+
+
+        //load property types to select
+        s.loadPropertyType = function () {
+            h.get("../api/Service/Property").then(function (d) {
+                s.propertyTypes = d.data;
+            });
+        }
+        s.loadPropertyType();
+
+        //load services
+        s.loadServiceList = function () {
+            h.get("../api/Service/services").then(function (d) {
+                s.serviceList = d.data;
+            });
+        }
+        s.loadServiceList();
+
+        s.getNavItemActive = function () {
+            var arrNav = ["navOne", "navTwo", "navThree"];
+            var active = localStorage.getItem("navActive");
+            if (active != null) {
+                if (active == arrNav[1]) {
+                    s.loadServiceList();
+                } else if (active == arrNav[2]) {
+                    s.loadPropertyType();
+                }
+                $("#" + active).click();
+                s.search = "";
+            }
+        }
+        s.getNavItemActive();
+
+
+        s.submit = function () {
+            var con = confirm("Are you sure you want to submit?");
+            if ($("#long").val() == null && $("#long").val() == null) {
+                s.service.longitude = 125.81;
+                s.service.latitude = 7.442;
+            } else {
+                s.service.latitude = $("#lat").val();
+                s.service.longitude = $("#long").val();
+            }
+
+
+            if (con) {
+                h.post("../api/Service/saveService", s.service).then(function (d) {
+                    s.service = null;
+                });
+            }
+        }
+
+        //save property type name
+
+        s.addPropertyType = function () {
+            h.post("../api/Service/addProperty?desc=" + s.property.Description + "&id=" + $("#userID").val()+"").then(function (d) {
+                if (d.data == 200) {
+                    swal("Success");
+                    s.loadPropertyType();
+                }
+            });
+        }
+
+        //update property type
+        s.update = function (a, b) {
+             s.updateShow = true;
+            if (b) {
+                s.property.userId = $("#userID").val();
+                h.put("../api/Service/savePropertyUpdate", s.property).then(function (d) {
+                    s.loadPropertyType();
+                    s.property = {};
+                    s.updateShow = false;
+                });
+                console.log(s.property)
+            } else {
+                h.get("../api/Service/getPropertyUpdate?id=" + a + "").then(function (d) {
+                    s.property = d.data;
+                    $(".propertyTypeName").focus();
+                });
+            }
+        }
+
+        s.remove = function (a) {
+            var con = confirm("Are you sure you want to remove?");
+
+            if (con) {
+                h.delete("../api/Service/remove?id=" + a + "").then(function (d) {
+                    if (d.data == 200) {
+                        swal("Success");
+                        s.loadPropertyType();
+                    }
+                });
+            } else {
+                return false;
+            }
+            
+        }
+
+        $(".navigation-service").click(function () {
+            localStorage.setItem("navActive", $(this)[0].childNodes[1].id);
+        });
+
+
+        //property list
+        $(".propertyTypeName").focus(function () {
+            $("#propertyCardAdd").addClass("propertyCardAddActive");
+        }).focusout(function () {
+            $("#propertyCardAdd").removeClass("propertyCardAddActive");
+        });
+
+    }]);
+
+    function browseFile(file) {
+
+        var input = file.target;
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            if (e.target.result) {
+                // create new image
+                $("#serviceImagePreview").attr("src", e.target.result);
+            }
+        };
+        reader.readAsDataURL(input.files[0]);
+    };
+</script>
