@@ -1,0 +1,74 @@
+﻿
+<link href="~/Content/custom/service-custom.css" rel="stylesheet" />
+
+
+<div ng-controller="userCtrl">
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+            <div class="card">
+                <div class="content">
+                    <div class="col-sm-12">
+                        <div class="form-group is-empty">
+                            <label class="control-label"></label>
+                            <input ng-model="searchUser" type="text" class="form-control propertyTypeName" value="" placeholder="Search user here...">
+                            <span class="material-input"></span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-sm-3" ng-repeat="ul in userList | filter: searchUser">
+            <div class="card card-pricing card-raised">
+                <div class="content">
+                    <h6 class="category">{{userType(ul.AccountTypeId)}}</h6>
+                    <div class="picture-container">
+                        <div class="picture-two">
+                            <img src="../img/nophoto.png" class="picture-src" id="serviceImagePreview" title="">
+                            <input name="back" type="file" id="back-picture" onchange="browseFile(event)">
+                        </div>
+                    </div>
+                    <h4 class="card-title">{{ul.fullName}}</h4>
+                    <p class="card-description">
+                        {{ul.Address}}
+                    </p>
+                    <p class="card-description">
+                        {{ul.Birthdate | date: 'MM-dd-yyyy'}}
+                    </p>
+                    <p class="card-description">
+                        {{ul.ContactNo}}
+                    </p>
+                    <a href="#pablo" class="btn btn-rose btn-round">Change Role</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    app.controller("userCtrl", ["$scope", "$http", function (s, h) {
+
+        s.loadUser = function () {
+            h.get("../api/UserManagement/Users").then(function (d) {
+                s.userList = d.data;
+            });
+        }
+        s.loadUser();
+
+        s.userType = function (a) {
+            if (a == 1) {
+                return "Buyer";
+            } else if (a == 2) {
+                return "Seller";
+            } else {
+                return "Admin";
+            }
+        }
+
+
+    }]);
+</script>

@@ -36,30 +36,40 @@ namespace propertyfinder.Controllers
         [HttpPost]
         public ActionResult auth(tUser u)
         {
-            if(u.UserId != null)
+            try
             {
-                var t = db.tUsers.Where(x => x.UserId == u.UserId).FirstOrDefault();
-                var userInfo = db.tPersonInfoes.Where(p => p.UserId == t.UserId).FirstOrDefault();
-
-                Session["userId"] = t.UserId;
-                Session["fullName"] = fullName(userInfo.Firstname, userInfo.Lastname);
-                Session["Role"] = t.AccountTypeId;
-                Session["userImg"] = userInfo.ProfileImg;
-            } else
-            {
-                var t = db.tUsers.Where(x => x.Username == u.Username && x.Password == u.Password).FirstOrDefault();
-                var userInfo = db.tPersonInfoes.Where(p => p.UserId == t.UserId).FirstOrDefault();
-
-                if (t == null)
+                if (u.UserId != null)
                 {
-                    t = null;
-                    return RedirectToAction("Index", "Home");
+                    var t = db.tUsers.Where(x => x.UserId == u.UserId).FirstOrDefault();
+                    var userInfo = db.tPersonInfoes.Where(p => p.UserId == t.UserId).FirstOrDefault();
+
+                    Session["userId"] = t.UserId;
+                    Session["fullName"] = fullName(userInfo.Firstname, userInfo.Lastname);
+                    Session["Role"] = t.AccountTypeId;
+                    Session["userImg"] = userInfo.ProfileImg;
                 }
-                Session["userId"] = t.UserId;
-                Session["fullName"] = fullName(userInfo.Firstname, userInfo.Lastname);
-                Session["Role"] = t.AccountTypeId;
+                else
+                {
+                    var t = db.tUsers.Where(x => x.Username == u.Username && x.Password == u.Password).FirstOrDefault();
+                    var userInfo = db.tPersonInfoes.Where(p => p.UserId == t.UserId).FirstOrDefault();
+
+                    if (t == null)
+                    {
+                        t = null;
+                        return RedirectToAction("Index", "Home");
+                    }
+                    Session["userId"] = t.UserId;
+                    Session["fullName"] = fullName(userInfo.Firstname, userInfo.Lastname);
+                    Session["Role"] = t.AccountTypeId;
+                }
+                return RedirectToAction("Index", "Home");
             }
-            return RedirectToAction("Index", "Home");
+            catch (Exception e)
+            {
+                Session["error"] = "Username or password was incorrect.";
+                return RedirectToAction("Login", "Account");
+            }
+            
         }
 
         public string fullName(string a, string c)

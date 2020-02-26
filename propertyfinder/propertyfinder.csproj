@@ -127,7 +127,9 @@
   <ItemGroup>
     <Compile Include="API\ProfileController.cs" />
     <Compile Include="API\RegistrationController.cs" />
+    <Compile Include="API\ServiceController.cs" />
     <Compile Include="API\tUsersController.cs" />
+    <Compile Include="API\UserManagementController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -136,6 +138,7 @@
     <Compile Include="Controllers\ExtensionMethods.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\SessionTimeoutAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -164,6 +167,8 @@
     <Content Include="Content\cropper.min.css" />
     <Content Include="Content\croppie.css" />
     <Content Include="Content\custom\picture-overlay.css" />
+    <Content Include="Content\custom\service-custom.css" />
+    <Content Include="Content\mapbox-gl.css" />
     <Content Include="Content\material-dashboard98f3.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\font-awesome\css\font-awesome.css" />
@@ -190,6 +195,7 @@
     <Content Include="img\image_placeholder.jpg" />
     <Content Include="img\lock.jpg" />
     <Content Include="img\login.jpg" />
+    <Content Include="img\mapbox-icon.png" />
     <Content Include="img\nophoto.png" />
     <Content Include="img\placeholder.jpg" />
     <Content Include="img\product1.jpg" />
@@ -226,6 +232,7 @@
     <Content Include="Scripts\template\jquery.sharrre.js" />
     <Content Include="Scripts\template\jquery.tagsinput.js" />
     <Content Include="Scripts\template\jquery.validate.min.js" />
+    <Content Include="Scripts\template\mapbox-gl.js" />
     <Content Include="Scripts\template\material-dashboard98f3.js" />
     <Content Include="Scripts\template\material.min.js" />
     <Content Include="Scripts\template\moment.min.js" />
@@ -320,6 +327,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_checkNavActive.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Service\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\angular\ph.json" />
+    <Content Include="Views\Admin\UserManagement.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
