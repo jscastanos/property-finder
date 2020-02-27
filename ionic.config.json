@@ -1,0 +1,7 @@
+{
+  "name": "propertyfinderapp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
