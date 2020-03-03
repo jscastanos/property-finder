@@ -1,9 +1,79 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>propertyProfile</ion-title>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="navigateHome()">
+        <ion-icon name="arrow-back-outline" color="light"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Information</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-slides pager="true">
+    <ion-slide>
+      <img src="../../../assets/hw.jpg" alt="" />
+    </ion-slide>
+    <ion-slide>
+      <img src="../../../assets/re.jpg" alt="" />
+    </ion-slide>
+  </ion-slides>
 
+  <ion-grid *ngIf="details" class="info">
+    <ion-row>
+      <ion-col size="8">
+        <h4>
+          {{propertyName}}
+        </h4>
+        <p>
+          <ion-icon name="person-outline"></ion-icon
+          ><a href=""> {{ details["personName"] }}</a>
+        </p>
+      </ion-col>
+      <ion-col size="2">
+        <ion-icon
+          name="location-outline"
+          class="button"
+          (click)="navigateMap( details['Longitude'], details['Latitude'])"
+        ></ion-icon>
+      </ion-col>
+      <ion-col size="2">
+        <ion-icon
+          name="navigate-outline"
+          class="button"
+          (click)="newMessage()"
+        ></ion-icon>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <h5>Address</h5>
+        <p>
+          <ion-icon name="home-outline"></ion-icon>
+          {{ details["LocationInfo"]}}
+        </p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <h5>Description</h5>
+        <p>
+          <ion-icon name="bookmarks-outline"></ion-icon>
+          {{ details["Description"] }}
+        </p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <h5>Services</h5>
+      </ion-col>
+      <ion-col size="12" *ngFor="let s of details.services"
+        ><ion-icon name="construct-outline"></ion-icon>
+        <span>{{s}}</span></ion-col
+      >
+    </ion-row>
+  </ion-grid>
 </ion-content>

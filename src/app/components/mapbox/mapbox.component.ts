@@ -17,6 +17,8 @@ export class MapboxComponent implements OnInit {
   currentCoords = [];
   localGeoData;
 
+  flyToCoords = [];
+
   //api
   geodata;
 
@@ -27,6 +29,8 @@ export class MapboxComponent implements OnInit {
     mapboxgl.accessToken =
       "pk.eyJ1Ijoic2VydmljZWZpbmRlci13ZWIiLCJhIjoiY2s2dXBoaHVoMGJhczNsbzNnbTh1Mjk1YyJ9.AjVFCfErae5fBJTT0o9OIw";
   }
+
+  longLat = [];
 
   ngOnInit() {
     this.buildMap();
@@ -51,6 +55,15 @@ export class MapboxComponent implements OnInit {
       center: tagumCoords,
       zoom: 15
     });
+
+    this.map.addControl(new mapboxgl.NavigationControl());
+
+    this.mapBoxDataService.currentMessage.subscribe(e => {
+      this.longLat = e;
+      if (this.longLat.length > 0) {
+        this.navigateToCoords(this.longLat);
+      }
+    });
   }
 
   locateUser() {
@@ -67,7 +80,7 @@ export class MapboxComponent implements OnInit {
       }
     });
 
-    this.map.addControl(this.geolocate, "bottom-right");
+    this.map.addControl(this.geolocate);
   }
 
   OnMapLoad() {
@@ -83,8 +96,6 @@ export class MapboxComponent implements OnInit {
     this.geolocate.on("geolocate", g => {
       this.currentCoords[0] = g.coords.longitude;
       this.currentCoords[1] = g.coords.latitude;
-
-      set("LngLat", this.currentCoords);
     });
   }
 
@@ -104,13 +115,18 @@ export class MapboxComponent implements OnInit {
       }
 
       el.style.backgroundSize = "cover";
-      el.style.width = "50px";
-      el.style.height = "50px";
+      el.style.width = "55px";
+      el.style.height = "55px";
 
       var type = document.createElement("span");
-      type.textContent = e.properties.acquisitionName;
+      type.textContent = "For " + e.properties.acquisitionName;
       type.style.color = "white";
       type.style.padding = "5px";
+      type.style.width = "65px";
+      type.style.position = "absolute";
+      type.style.top = "-15px";
+      type.style.left = "0";
+      type.style.borderRadius = "10px";
 
       if (e.properties.acquisitionId == 1) {
         type.style.backgroundColor = "#c23a3a";
@@ -126,9 +142,31 @@ export class MapboxComponent implements OnInit {
         .setLngLat(e.geometry.coordinates)
         .addTo(this.map);
 
-      marker.getElement().addEventListener("click", function() {
-        console.log(e.properties.id);
+      marker.getElement().addEventListener("click", () => {
+        let data = {
+          id: e.properties.id,
+          name: e.properties.title
+        };
+
+        let params = {
+          queryParams: {
+            q: JSON.stringify(data)
+          }
+        };
+
+        this.map.flyTo({ cemter: this.currentCoords, zoom: 11 });
+
+        setTimeout(() => {
+          this.nav.navigateForward(["/property-profile"], params);
+        }, 100);
       });
+    });
+  }
+
+  navigateToCoords(longLat) {
+    this.map.flyTo({
+      center: longLat,
+      zoom: 13
     });
   }
 
