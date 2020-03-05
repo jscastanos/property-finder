@@ -1,40 +1,74 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { PropertyProfileService } from "src/app/services/property-profile.service";
 import { MapboxdataService } from "src/app/services/mapboxdata.service";
-import { NavController } from "@ionic/angular";
+import { NavController, AlertController } from "@ionic/angular";
+import { EnvService } from "src/app/services/env.service";
+import { get } from "../../services/storage.service";
+import { RatingService } from "src/app/services/rating.service";
+import { RatingComponent } from "src/app/components/rating/rating.component";
 
 @Component({
   selector: "app-property-profile",
   templateUrl: "./property-profile.page.html",
   styleUrls: ["./property-profile.page.scss"]
 })
-export class PropertyProfilePage implements OnInit, OnDestroy {
+export class PropertyProfilePage implements OnInit {
+  @ViewChild(RatingComponent, { static: false })
+  _ratingComponent: RatingComponent;
+
   propertyName;
-  properyId;
+  properytId;
+  refer;
   details;
+  url;
+  userId;
+  hasRated = false;
+  userRating = 0;
 
   //api
   getInfo;
+  getRating;
+  postRate;
 
   constructor(
     private route: ActivatedRoute,
     private nav: NavController,
     private propertyService: PropertyProfileService,
-    private mapboxService: MapboxdataService
+    private mapboxService: MapboxdataService,
+    private env: EnvService,
+    private ratingService: RatingService
   ) {
+    this.url = env.URL;
+    get("user").then(e => {
+      this.userId = e;
+      this.loadRating(e);
+    });
+
     this.route.queryParams.subscribe(params => {
       let data = JSON.parse(params.q);
       this.propertyName = data["name"];
-      this.properyId = data["id"];
+      this.properytId = data["id"];
+      this.refer = data["refer"];
     });
   }
 
   latLng = [];
 
+  goRate(score) {
+    this.postRate = this.ratingService
+      .postRating(this.userId, this.properytId, score)
+      .subscribe(e => {
+        if (e) {
+          this.hasRated = true;
+          this._ratingComponent.loadRating(this.userId);
+        }
+      });
+  }
+
   ngOnInit() {
     this.getInfo = this.propertyService
-      .getPropertyInfo(this.properyId)
+      .getPropertyInfo(this.properytId)
       .subscribe(e => {
         this.details = e;
       });
@@ -44,7 +78,26 @@ export class PropertyProfilePage implements OnInit, OnDestroy {
     );
   }
 
-  newMessage() {}
+  loadRating(userId) {
+    this.getRating = this.ratingService
+      .getRating(userId, this.properytId)
+      .subscribe(e => {
+        if (e["userRating"] != undefined) {
+          this.hasRated = true;
+          this.userRating = e["userRating"];
+        }
+      });
+  }
+
+  newMessage() {
+    this.propertyService
+      .sendNotification(this.userId, this.details.UserId)
+      .subscribe(e => {
+        if (e == 1) {
+          alert("Notification Sent!");
+        }
+      });
+  }
 
   navigateMap(long, lat) {
     let longLat = [long, lat];
@@ -52,12 +105,17 @@ export class PropertyProfilePage implements OnInit, OnDestroy {
     this.nav.navigateForward("/");
   }
 
-  sendNotif() {}
-
   navigateHome() {
-    this.mapboxService.changeDestination([125.8093, 7.4472]);
-    this.nav.navigateBack("/");
+    if (this.refer == 1) {
+      this.nav.navigateBack("/post");
+    } else {
+      this.mapboxService.changeDestination([125.8093, 7.4472]);
+      this.nav.navigateBack("/");
+    }
   }
 
-  ngOnDestroy() {}
+  ionViewDidLeave() {
+    this.getInfo.unsubscribe();
+    this.getRating.unsubscribe();
+  }
 }

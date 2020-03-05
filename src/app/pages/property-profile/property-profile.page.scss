@@ -4,6 +4,7 @@ img {
 
 ion-slides {
   --bullet-background-active: var(--ion-color-light);
+  --bullet-background: var(--ion-color-primary);
 }
 
 ion-slide img {
@@ -55,5 +56,11 @@ ion-slide img {
       background-color: var(--ion-color-secondary);
       color: var(--ion-color-light);
     }
+  }
+}
+
+.alert-wrapper {
+  button {
+    display: inline;
   }
 }

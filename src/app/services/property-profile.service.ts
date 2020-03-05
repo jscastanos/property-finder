@@ -11,4 +11,13 @@ export class PropertyProfileService {
   getPropertyInfo(id) {
     return this.http.get(this.env.API_URL + "property/" + id);
   }
+
+  sendNotification(senderId, recipientId) {
+    return this.http.post(
+      this.env.API_URL + "post/notify/" + senderId + "/" + recipientId,
+      {
+        status: "ok"
+      }
+    );
+  }
 }

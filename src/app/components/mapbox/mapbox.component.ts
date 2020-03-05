@@ -14,13 +14,14 @@ const mapboxgl = require("mapbox-gl");
 export class MapboxComponent implements OnInit {
   map;
   geolocate;
-  currentCoords = [];
   localGeoData;
+  localGeoSData;
 
   flyToCoords = [];
 
   //api
   geodata;
+  geosdata;
 
   constructor(
     private nav: NavController,
@@ -34,20 +35,14 @@ export class MapboxComponent implements OnInit {
 
   ngOnInit() {
     this.buildMap();
+    this.loadGeoSData();
     this.locateUser();
     this.OnMapLoad();
-
-    let checkTimer = interval(1000).subscribe(ct => {
-      if (this.currentCoords.length > 0) {
-        checkTimer.unsubscribe();
-        this.loadGeoData();
-      }
-    });
+    this.loadGeoData();
   }
 
   buildMap() {
     const tagumCoords = [125.8093, 7.4472];
-
     //build map
     this.map = new mapboxgl.Map({
       container: "map",
@@ -72,7 +67,6 @@ export class MapboxComponent implements OnInit {
       positionOptions: {
         enableHighAccuracy: true
       },
-      trackUserLocation: true,
       showUserLocation: true,
       showAccuracyCircle: false,
       fitBounds: {
@@ -88,14 +82,6 @@ export class MapboxComponent implements OnInit {
       //redraw
       document.getElementById("overlay").hidden = true;
       this.map.resize();
-
-      //locate user
-      this.geolocate.trigger();
-    });
-
-    this.geolocate.on("geolocate", g => {
-      this.currentCoords[0] = g.coords.longitude;
-      this.currentCoords[1] = g.coords.latitude;
     });
   }
 
@@ -145,7 +131,8 @@ export class MapboxComponent implements OnInit {
       marker.getElement().addEventListener("click", () => {
         let data = {
           id: e.properties.id,
-          name: e.properties.title
+          name: e.properties.title,
+          refer: 2
         };
 
         let params = {
@@ -153,8 +140,6 @@ export class MapboxComponent implements OnInit {
             q: JSON.stringify(data)
           }
         };
-
-        this.map.flyTo({ cemter: this.currentCoords, zoom: 11 });
 
         setTimeout(() => {
           this.nav.navigateForward(["/property-profile"], params);
@@ -164,9 +149,11 @@ export class MapboxComponent implements OnInit {
   }
 
   navigateToCoords(longLat) {
-    this.map.flyTo({
-      center: longLat,
-      zoom: 13
+    this.map.on("load", () => {
+      this.map.flyTo({
+        center: longLat,
+        zoom: 15
+      });
     });
   }
 
@@ -179,5 +166,40 @@ export class MapboxComponent implements OnInit {
         //setup markers
         this.drawMarkers();
       });
+  }
+
+  async loadGeoSData() {
+    this.geosdata = await this.mapBoxDataService
+      .fetchMapBoxSData()
+      .subscribe(res => {
+        this.localGeoSData = res;
+        this.drawServicesMarkers();
+      });
+  }
+
+  drawServicesMarkers() {
+    //set marker
+    this.localGeoSData["features"].forEach(e => {
+      var el = document.createElement("div");
+      var img = document.createElement("img");
+      img.src = "../../assets/marker.png";
+      img.style.width = "30px";
+      el.appendChild(img);
+
+      let marker = new mapboxgl.Marker(el)
+        .setLngLat(e.geometry.coordinates)
+        .setPopup(
+          new mapboxgl.Popup({ offset: 25 }).setHTML(
+            "<h5>" +
+              e.properties.title +
+              "</h5><p>" +
+              e.properties.description +
+              "</p><p> Call Us: " +
+              e.properties.ContactNo +
+              "</p>"
+          )
+        )
+        .addTo(this.map);
+    });
   }
 }

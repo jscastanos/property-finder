@@ -19,4 +19,11 @@ export class MapboxdataService {
   changeDestination(longLat) {
     this.latLong.next(longLat);
   }
+
+  fetchMapBoxSData() {
+    return this.http.get(this.env.API_URL + "geocode/geojson/services");
+  }
+  fetchBarangays() {
+    return this.http.get(this.env.API_URL + "geocode/barangays");
+  }
 }

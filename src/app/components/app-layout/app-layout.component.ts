@@ -1,4 +1,6 @@
 import { Component, OnInit } from "@angular/core";
+import { remove } from "../../services/storage.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-app-layout",
@@ -9,23 +11,24 @@ export class AppLayoutComponent implements OnInit {
   public selectedIndex = 0;
   public appPages = [
     {
-      title: "Profile",
-      url: "/profile",
-      icon: "person"
+      title: "Post",
+      url: "/post",
+      icon: "home"
     },
     {
-      title: "Navigate Map",
-      url: "/home",
+      title: "Map",
+      url: "/",
       icon: "location"
-    },
-    {
-      title: "Login",
-      url: "/login",
-      icon: "person"
     }
   ];
 
-  constructor() {}
+  constructor(private router: Router) {}
+
+  logout() {
+    remove("user").then(e => {
+      this.router.navigateByUrl("/login");
+    });
+  }
 
   ngOnInit() {}
 }
