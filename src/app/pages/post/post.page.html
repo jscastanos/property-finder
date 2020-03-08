@@ -51,8 +51,8 @@
   <div class="cards">
     <div
       class="card-custom"
-      *ngFor="let post of posts"
-      (click)="goTo(post['properties']['id'], post['properties']['title'])"
+      *ngFor="let post of posts; let i = index"
+      (click)="goTo(post['properties']['id'], post['properties']['title'], i)"
     >
       <img
         class="postImg"
@@ -76,10 +76,17 @@
                     class="ios hydrated"
                     class="sellerImg"
                   >
-                    <img src="../../../assets/house-lot.png" />
+                    <img
+                      src="{{url}}post/userImage/{{post['properties']['UserId']}}"
+                    />
                   </ion-avatar>
                   <ion-label>
                     <h2>{{post["properties"]["sellerName"]}}</h2>
+
+                    <p>
+                      <ion-icon name="people-circle"></ion-icon>
+                      {{post['properties']['CountViews']}}
+                    </p>
                   </ion-label>
                 </ion-item>
               </ion-col>

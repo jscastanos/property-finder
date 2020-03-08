@@ -2,6 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { MapboxdataService } from "src/app/services/mapboxdata.service";
 import { NavController } from "@ionic/angular";
 import { EnvService } from "src/app/services/env.service";
+import { PropertyProfileService } from "src/app/services/property-profile.service";
+import { get } from "../../services/storage.service";
 
 @Component({
   selector: "app-post",
@@ -13,6 +15,7 @@ export class PostPage implements OnInit {
   url;
   brgys;
   tempPosts = [];
+  userId;
 
   //fetch
   getGeodata;
@@ -20,13 +23,19 @@ export class PostPage implements OnInit {
 
   constructor(
     private mapboxService: MapboxdataService,
+    private profileService: PropertyProfileService,
     private nav: NavController,
     private env: EnvService
   ) {
     this.url = env.URL;
+    get("user").then(e => {
+      this.userId = e;
+    });
   }
 
   ngOnInit() {
+    console.log("hey");
+
     this.getBrgys = this.mapboxService.fetchBarangays().subscribe(b => {
       this.brgys = b;
     });
@@ -50,35 +59,12 @@ export class PostPage implements OnInit {
     });
   }
 
-  // addData(){
-  //   this.posts
-  // }
-
-  // filterBrgy(e) {
-  //   this.posts = new Array(this.tempPosts);
-  //   var selectedBrgy = e.detail.value["BrgyID"];
-  //   console.log(selectedBrgy);
-
-  //   if (e.detail.value != 0) {
-  //     for (var d in this.posts) {
-  //       console.log(this.tempPosts);
-  //       console.log("index", d);
-  //       console.log(this.posts[d]);
-  //       if (this.posts[d]["properties"]["BrgyID"] != selectedBrgy) {
-  //         console.log(this.posts[d]["properties"]["BrgyID"]);
-  //         this.posts.splice(d, 1);
-  //       }
-  //     }
-
-  //     console.log(this.posts);
-  //   }
-  // }
   ionViewDidLeave() {
     this.getGeodata.unsubscribe();
     this.getBrgys.unsubscribe();
   }
 
-  goTo(id, title) {
+  goTo(id, title, index) {
     let data = {
       id: id,
       name: title,
@@ -90,6 +76,10 @@ export class PostPage implements OnInit {
         q: JSON.stringify(data)
       }
     };
+
+    this.profileService.postVisit(this.userId, id).subscribe(e => {
+      this.posts[index]["properties"]["CountViews"] += 1;
+    });
 
     this.nav.navigateForward(["/property-profile"], params);
   }

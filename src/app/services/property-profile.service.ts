@@ -12,9 +12,24 @@ export class PropertyProfileService {
     return this.http.get(this.env.API_URL + "property/" + id);
   }
 
-  sendNotification(senderId, recipientId) {
+  sendNotification(senderId, recipientId, postId) {
     return this.http.post(
-      this.env.API_URL + "post/notify/" + senderId + "/" + recipientId,
+      this.env.API_URL +
+        "post/notify/" +
+        senderId +
+        "/" +
+        recipientId +
+        "/" +
+        postId,
+      {
+        status: "ok"
+      }
+    );
+  }
+
+  postVisit(userId, postId) {
+    return this.http.post(
+      this.env.API_URL + "post/visit/" + userId + "/" + postId,
       {
         status: "ok"
       }

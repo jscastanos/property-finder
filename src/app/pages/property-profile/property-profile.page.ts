@@ -37,7 +37,8 @@ export class PropertyProfilePage implements OnInit {
     private propertyService: PropertyProfileService,
     private mapboxService: MapboxdataService,
     private env: EnvService,
-    private ratingService: RatingService
+    private ratingService: RatingService,
+    private alertController: AlertController
   ) {
     this.url = env.URL;
     get("user").then(e => {
@@ -55,8 +56,8 @@ export class PropertyProfilePage implements OnInit {
 
   latLng = [];
 
-  goRate(score) {
-    this.postRate = this.ratingService
+  async goRate(score) {
+    this.postRate = await this.ratingService
       .postRating(this.userId, this.properytId, score)
       .subscribe(e => {
         if (e) {
@@ -89,14 +90,50 @@ export class PropertyProfilePage implements OnInit {
       });
   }
 
-  newMessage() {
-    this.propertyService
-      .sendNotification(this.userId, this.details.UserId)
-      .subscribe(e => {
-        if (e == 1) {
-          alert("Notification Sent!");
-        }
-      });
+  // async alertNotify() {
+  // return new Promise(async (resolve, reject) => {
+  //   let alert = await this.alertController.create({
+  //     header: "I'm interested",
+  //     message: "Send notification to seller",
+  //     buttons: [
+  //       {
+  //         text: "Ok",
+  //         handler: () => {
+  //           resolve(true);
+  //         }
+  //       },
+  //       {
+  //         text: "Cancel",
+  //         handler: () => {
+  //           resolve(false);
+  //         }
+  //       }
+  //     ]
+  //   });
+  //   alert.present();
+  // });
+  // let alert = await this.alertController.create({
+  //   header: "hi"
+  // });
+  // alert.present();
+  //  alert("hi");
+  // }
+
+  sendNotify() {
+    // this.alertNotify();
+    let c = confirm("Seller?");
+
+    if (c) {
+      this.propertyService
+        .sendNotification(this.userId, this.details.UserId, this.properytId)
+        .subscribe(e => {
+          if (e == 1) {
+            alert("Notification sent!");
+          } else {
+            alert("Error while sending");
+          }
+        });
+    }
   }
 
   navigateMap(long, lat) {
