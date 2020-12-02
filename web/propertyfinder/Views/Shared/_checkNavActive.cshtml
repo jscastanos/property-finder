@@ -1,0 +1,16 @@
+﻿
+<script>
+    (function() {
+
+        var path = location.pathname
+        $(".nav > li a").each(function (index, elem) {
+            var compare = $(this).attr("href");
+
+            if (".." + path === compare.split("?")[0]) {
+                console.log($(this).parent()[0].classList.add("active"))
+                $(this).parent()[0].classList.add("active")
+            }
+        });
+
+    })();
+</script>

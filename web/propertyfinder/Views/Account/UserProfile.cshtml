@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewBag.Title = "UserProfile";
+}
+<script src="~/Scripts/template/sweet_alert.min.js"></script>
+<div class="row" ng-controller="upCtrl">
+    <div class="col-md-3">
+        <div class="card card-profile">
+            <div class="card-avatar">
+                <a href="">
+                    <img class="img" src="../Account/RetrieveImage?id={{user.UserId}}&facingType=2" onerror="this.src='../img/nophoto.png'">
+                </a>
+            </div>
+
+            <div class="card-content">
+                <h4>{{profile.Firstname}} {{profile.Middlename}} {{profile.Lastname}}</h4>
+                <h4 class="card-title text-gray" style="font-size: 14px">{{profile.ContactNo}}</h4>
+                <p class="description">
+                    {{profile.Address}}
+                </p>
+                @if ((int)Session["Role"] == 3)
+                {
+                    <a href="" ng-show="user.Status == 0" ng-click="verify()" class="btn btn-rose btn-round">Verify<div class="ripple-container"></div></a>
+                    <a href="" ng-show="user.Status == 1" style="cursor: default" class="btn btn-success btn-round text-gray">Verified<div class="ripple-container"></div></a>
+                }
+                else
+                {
+                    <a href="" ng-show="user.Status == 1" style="cursor: default" class="btn btn-success btn-round text-success">You are Verified<div class="ripple-container"></div></a>
+                    <a href="" ng-show="user.Status == 0" style="cursor: default" class="btn btn-danger btn-round text-danger">Pending - Not Verified<div class="ripple-container"></div></a>
+                }
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-header card-header-icon" data-background-color="rose">
+                <i class="material-icons">perm_identity</i>
+            </div>
+            <div class="card-content">
+                <h4 class="card-title">Edit Profile - <small class="category">Complete your profile</small></h4>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <img data-enlargable style="cursor: pointer; max-height: 414px; border: 1px solid #e61d67bf;" src="../Account/RetrieveImage?id={{profile.PersonId}}&facingType=0" alt="Alternate Text" onerror="this.src='../img/nophoto.png'" />
+                        <div class="text-center">
+                            <h4 class="text-gray">Photo Verification Front</h4>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <img data-enlargable style="cursor: pointer; max-height: 414px; border: 1px solid #e61d67bf;" src="../Account/RetrieveImage?id={{profile.PersonId}}&facingType=1" alt="Alternate Text" onerror="this.src='../img/nophoto.png'" />
+                        <div class="text-center">
+                            <h4 class="text-gray">Photo Verification Back</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    app.controller("upCtrl", ["$scope", "$http", function (s, h) {
+
+        var user = location.search.split('=')[1];
+
+        s.getData = function () {
+            h.get("../api/Profile?uid=" + user + "").then(function (d) {
+                s.profile = d.data.personInfo;
+                s.user = d.data.user;
+            });
+        }
+        s.getData();
+
+        s.verify = function () {
+            var con = confirm("Are you sure you want to verify?");
+            if (con) {
+                h.post("../api/Profile?user=" + user + "").then(function (d) {
+                    swal("Verified!", "Data has been successfully verified.", "success");
+                    s.getData();
+                });
+            } else {
+                return false;
+            }
+        }
+
+        $('img[data-enlargable]').addClass('img-enlargable').click(function () {
+            var src = $(this).attr('src');
+            $('<div>').css({
+                background: 'RGBA(0,0,0,.8) url(' + src + ') no-repeat center',
+                backgroundSize: 'contain',
+                width: '100%', height: '100%',
+                position: 'fixed',
+                zIndex: '10000',
+                top: '0', left: '0',
+                cursor: 'zoom-out'
+            }).click(function () {
+                $(this).remove();
+            }).appendTo('body');
+        });
+
+    }]);
+</script>

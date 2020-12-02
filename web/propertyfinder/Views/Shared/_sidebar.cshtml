@@ -1,0 +1,64 @@
+﻿
+<div class="sidebar" data-active-color="rose" data-background-color="black" data-image="@Url.Content("~/img/sidebar-1.jpg")">
+    <!--
+        Tip 1: You can change the color of active element of the sidebar using: data-active-color="purple | blue | green | orange | red | rose"
+        Tip 2: you can also add an image using data-image tag
+        Tip 3: you can change the color of the sidebar with data-background-color="white | black"
+    -->
+
+    <div class="logo">
+        <a href="#" class="simple-text logo-mini">
+            PF
+        </a>
+
+        <a href="#" class="simple-text logo-normal">
+            PROPERTY FINDER
+        </a>
+    </div>
+
+    <div class="sidebar-wrapper">
+        <div class="user">
+            <div class="photo">
+                <img src="../Account/RetrieveImage?id=@Session["userId"]&facingType=2" onerror="this.src='../img/nophoto.png'"/>
+            </div>
+            <div class="info">
+                <a data-toggle="collapse" href="#collapseExample" class="collapsed">
+                    <span>
+                        @Session["fullName"]
+                        <b class="caret"></b>
+                    </span>
+                </a>
+                <div class="clearfix"></div>
+                <div class="collapse" id="collapseExample">
+                    <ul class="nav">
+                        <li>
+                            <a href="../Account/UserProfile?uid=@Session["userId"]">
+                                <span class="sidebar-mini"> MP </span>
+                                <span class="sidebar-normal"> My Profile </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="../Account/logout">
+                                <span class="sidebar-mini"> SO </span>
+                                <span class="sidebar-normal"> Sign Out </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <ul class="nav">
+            @if ((int)Session["Role"] == 1)
+            {
+                @Html.Partial("_BuyerNav")
+            }
+            else if((int)Session["Role"] == 2)
+            {
+                @Html.Partial("_SellerNav")
+            } else
+            {
+                @Html.Partial("_AdminNav")
+            }
+        </ul>
+    </div>
+</div>
