@@ -1,0 +1,36 @@
+.primary {
+  color: #4482a8;
+}
+
+.secondary {
+  color: var(--ion-color-secondary);
+}
+
+.success {
+  color: var(--ion-color-success);
+}
+
+span {
+  font-weight: 800;
+}
+
+h1,
+p {
+  text-align: center;
+}
+
+form {
+  background-color: #fff;
+  height: 100vh !important;
+  display: flex;
+  align-items: center;
+  vertical-align: center;
+
+  ion-text {
+    text-align: center !important;
+  }
+
+  ion-icon {
+    margin-right: 10px;
+  }
+}
