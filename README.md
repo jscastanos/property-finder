@@ -1,3 +1,6 @@
 # Property Finder 🏘🔎
 
 A Simple Realty Search App built using Ionic Framework (Angular 2) + MapBox (frontend) and DotNet Core for (backend)
+
+- [Mobile](./mobile)
+- [Web](./web)
